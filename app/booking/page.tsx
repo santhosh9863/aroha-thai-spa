@@ -27,15 +27,30 @@ export default function BookingPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmissionState('loading');
 
-    // Simulate API call with 1.5 second delay
-    setTimeout(() => {
-      console.log('Booking submitted:', formData);
-      setSubmissionState('success');
-    }, 1500);
+    try {
+      const response = await fetch('/api/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log('Booking submitted successfully');
+        setSubmissionState('success');
+      } else {
+        console.error('Booking submission failed:', response.statusText);
+        setSubmissionState('idle');
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      setSubmissionState('idle');
+    }
   };
 
   const handleBookAnother = () => {
