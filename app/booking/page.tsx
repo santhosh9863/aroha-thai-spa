@@ -257,14 +257,15 @@ export default function BookingPage() {
                       <label className="block text-white font-serif font-bold mb-3 text-lg">
                         Date
                       </label>
-                      <input
-                        type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
-                        required
-                        className="w-full bg-gray-800 border border-gray-700 rounded-lg px-5 py-4 text-white focus:outline-none focus:border-yellow-500 focus:shadow-lg focus:shadow-yellow-500/20 transition-all duration-300"
-                      />
+                     <input
+  type="date"
+  name="date"
+  value={formData.date}
+  onChange={handleChange}
+  min={new Date().toISOString().split('T')[0]}
+  required
+  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-5 py-4 text-white focus:outline-none focus:border-yellow-500 focus:shadow-lg focus:shadow-yellow-500/20 transition-all duration-300"
+/>
                     </div>
 
                     {/* Time Picker */}

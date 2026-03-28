@@ -13,10 +13,20 @@ interface BookingRequest {
 export async function POST(request: NextRequest) {
   try {
     const body: BookingRequest = await request.json();
-
     // Validate required fields
     const { fullName, phone, service, date, time } = body;
+    // 🚫 Prevent past date bookings
+const today = new Date().toISOString().split('T')[0];
 
+if (date && date < today) {
+  return NextResponse.json(
+    {
+      success: false,
+      message: 'Cannot book past dates',
+    },
+    { status: 400 }
+  );
+}
     if (!fullName || !phone || !service || !date || !time) {
       return NextResponse.json(
         {

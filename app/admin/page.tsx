@@ -13,6 +13,7 @@ interface Booking {
   date: string;
   time: string;
   status: 'pending' | 'confirmed' | 'cancelled';
+  notes?: string; // ✅ ADDED
 }
 
 const getStatusColor = (status: string) => {
@@ -90,6 +91,7 @@ export default function AdminDashboard() {
         date: booking.date || '',
         time: booking.time || '',
         status: booking.status || 'pending',
+        notes: booking.notes || '', // ✅ ADDED
       }));
 
       setBookings(formattedBookings);
@@ -302,6 +304,7 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm text-gray-300">Service</th>
                   <th className="px-6 py-4 text-left text-sm text-gray-300">Date</th>
                   <th className="px-6 py-4 text-left text-sm text-gray-300">Time</th>
+                  <th className="px-6 py-4 text-left text-sm text-gray-300">Notes</th>
                   <th className="px-6 py-4 text-left text-sm text-gray-300">Status</th>
                   <th className="px-6 py-4 text-left text-sm text-gray-300">Actions</th>
                 </tr>
@@ -316,6 +319,10 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4">{booking.service}</td>
                     <td className="px-6 py-4">{booking.date}</td>
                     <td className="px-6 py-4">{booking.time}</td>
+
+                    <td className="px-6 py-4 text-gray-400 text-sm">
+                      {booking.notes || '-'}
+                    </td>
 
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded ${getStatusColor(booking.status)}`}>
@@ -361,6 +368,35 @@ export default function AdminDashboard() {
         </div>
 
       </div>
+
+      {/* DELETE MODAL (FIXED BUTTON ISSUE) */}
+      {isModalOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={closeModal}></div>
+
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full max-w-md">
+
+              <h2 className="text-xl font-bold mb-4 text-white">Delete Booking</h2>
+
+              <p className="text-gray-400 mb-6">
+                Are you sure you want to delete this booking?
+              </p>
+
+              <div className="flex gap-4">
+                <button onClick={closeModal} className="flex-1 px-4 py-2 bg-gray-700 rounded text-white">
+                  Cancel
+                </button>
+
+                <button onClick={confirmDelete} className="flex-1 px-4 py-2 bg-red-600 rounded text-white">
+                  Delete
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );
